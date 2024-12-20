@@ -18,12 +18,22 @@ export default function ProductsPage() {
     const [loading, setLoading] = useState<boolean>(true);
     const [limit, setLimit] = useState<number>(5); // Mặc định là 5 sản phẩm
     const [sortOrder, setSortOrder] = useState<string>("asc"); // Mặc định là sắp xếp tăng dần (asc)
+    const [categories, setCategories] = useState<string[]>([]); // Danh sách các danh mục
+    const [selectedCategory, setSelectedCategory] = useState<string>(""); // Danh mục đã chọn
 
-    const fetchProducts = (limit: number, sortOrder: string) => {
+    // Hàm lấy danh sách sản phẩm
+    const fetchProducts = (
+        limit: number,
+        sortOrder: string,
+        category: string
+    ) => {
         setLoading(true);
-        fetch(
-            `https://fakestoreapi.com/products?limit=${limit}&sort=${sortOrder}`
-        )
+        let url = `https://fakestoreapi.com/products?limit=${limit}&sort=${sortOrder}`;
+        if (category) {
+            url = `https://fakestoreapi.com/products/category/${category}?limit=${limit}&sort=${sortOrder}`;
+        }
+
+        fetch(url)
             .then((res) => res.json())
             .then((data) => {
                 setProducts(data);
@@ -35,9 +45,23 @@ export default function ProductsPage() {
             });
     };
 
+    // Hàm lấy danh sách các danh mục
+    const fetchCategories = () => {
+        fetch("https://fakestoreapi.com/products/categories")
+            .then((res) => res.json())
+            .then((data) => {
+                setCategories(data);
+            })
+            .catch((error) => {
+                console.error("Error fetching categories:", error);
+            });
+    };
+
+    // Effect để lấy danh mục và sản phẩm
     useEffect(() => {
-        fetchProducts(limit, sortOrder);
-    }, [limit, sortOrder]); // Khi limit hoặc sortOrder thay đổi thì gọi lại API
+        fetchCategories();
+        fetchProducts(limit, sortOrder, selectedCategory);
+    }, [limit, sortOrder, selectedCategory]); // Khi limit, sortOrder hoặc selectedCategory thay đổi
 
     if (loading) {
         return <LoadingSpinner />;
@@ -47,44 +71,74 @@ export default function ProductsPage() {
         <div className="container mx-auto py-8">
             <h1 className="text-2xl font-bold mb-6">Products</h1>
 
-            {/* Dropdown chọn số lượng sản phẩm */}
+            {/* Navbar cho các danh mục */}
             <div className="mb-4">
-                <label
-                    htmlFor="limit"
-                    className="mr-2 font-semibold text-gray-700"
-                >
-                    Show:
-                </label>
-                <select
-                    id="limit"
-                    value={limit}
-                    onChange={(e) => setLimit(Number(e.target.value))}
-                    className="border rounded px-4 py-2"
-                >
-                    <option value={5}>5</option>
-                    <option value={10}>10</option>
-                    <option value={15}>15</option>
-                    <option value={20}>20</option>
-                </select>
-            </div>
+                <div className="flex space-x-4">
+                    {/* Dropdown cho danh mục */}
+                    <div className="flex items-center">
+                        <label
+                            htmlFor="category"
+                            className="mr-2 font-semibold text-gray-700"
+                        >
+                            Filter by Category:
+                        </label>
+                        <select
+                            id="category"
+                            value={selectedCategory}
+                            onChange={(e) =>
+                                setSelectedCategory(e.target.value)
+                            }
+                            className="border rounded px-4 py-2"
+                        >
+                            <option value="">All Categories</option>
+                            {categories.map((category) => (
+                                <option key={category} value={category}>
+                                    {category}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
 
-            {/* Dropdown chọn thứ tự sắp xếp (Ascending/Descending) */}
-            <div className="mb-4">
-                <label
-                    htmlFor="sort"
-                    className="mr-2 font-semibold text-gray-700"
-                >
-                    Sort by Price:
-                </label>
-                <select
-                    id="sort"
-                    value={sortOrder}
-                    onChange={(e) => setSortOrder(e.target.value)}
-                    className="border rounded px-4 py-2"
-                >
-                    <option value="asc">Ascending</option>
-                    <option value="desc">Descending</option>
-                </select>
+                    {/* Dropdown chọn số lượng sản phẩm */}
+                    <div className="flex items-center">
+                        <label
+                            htmlFor="limit"
+                            className="mr-2 font-semibold text-gray-700"
+                        >
+                            Show:
+                        </label>
+                        <select
+                            id="limit"
+                            value={limit}
+                            onChange={(e) => setLimit(Number(e.target.value))}
+                            className="border rounded px-4 py-2"
+                        >
+                            <option value={5}>5</option>
+                            <option value={10}>10</option>
+                            <option value={15}>15</option>
+                            <option value={20}>20</option>
+                        </select>
+                    </div>
+
+                    {/* Dropdown chọn thứ tự sắp xếp (Ascending/Descending) */}
+                    <div className="flex items-center">
+                        <label
+                            htmlFor="sort"
+                            className="mr-2 font-semibold text-gray-700"
+                        >
+                            Sort by Price:
+                        </label>
+                        <select
+                            id="sort"
+                            value={sortOrder}
+                            onChange={(e) => setSortOrder(e.target.value)}
+                            className="border rounded px-4 py-2"
+                        >
+                            <option value="asc">Ascending</option>
+                            <option value="desc">Descending</option>
+                        </select>
+                    </div>
+                </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
