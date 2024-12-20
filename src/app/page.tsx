@@ -17,10 +17,13 @@ export default function ProductsPage() {
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [limit, setLimit] = useState<number>(5); // Mặc định là 5 sản phẩm
+    const [sortOrder, setSortOrder] = useState<string>("asc"); // Mặc định là sắp xếp tăng dần (asc)
 
-    const fetchProducts = (limit: number) => {
+    const fetchProducts = (limit: number, sortOrder: string) => {
         setLoading(true);
-        fetch(`https://fakestoreapi.com/products?limit=${limit}`)
+        fetch(
+            `https://fakestoreapi.com/products?limit=${limit}&sort=${sortOrder}`
+        )
             .then((res) => res.json())
             .then((data) => {
                 setProducts(data);
@@ -33,8 +36,8 @@ export default function ProductsPage() {
     };
 
     useEffect(() => {
-        fetchProducts(limit);
-    }, [limit]);
+        fetchProducts(limit, sortOrder);
+    }, [limit, sortOrder]); // Khi limit hoặc sortOrder thay đổi thì gọi lại API
 
     if (loading) {
         return <LoadingSpinner />;
@@ -62,6 +65,25 @@ export default function ProductsPage() {
                     <option value={10}>10</option>
                     <option value={15}>15</option>
                     <option value={20}>20</option>
+                </select>
+            </div>
+
+            {/* Dropdown chọn thứ tự sắp xếp (Ascending/Descending) */}
+            <div className="mb-4">
+                <label
+                    htmlFor="sort"
+                    className="mr-2 font-semibold text-gray-700"
+                >
+                    Sort by Price:
+                </label>
+                <select
+                    id="sort"
+                    value={sortOrder}
+                    onChange={(e) => setSortOrder(e.target.value)}
+                    className="border rounded px-4 py-2"
+                >
+                    <option value="asc">Ascending</option>
+                    <option value="desc">Descending</option>
                 </select>
             </div>
 
