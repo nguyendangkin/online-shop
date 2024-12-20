@@ -53,10 +53,10 @@ export default function Header() {
                         Home
                     </Link>
                     <Link
-                        href="/about"
+                        href="/dashboard"
                         className="text-gray-600 hover:text-gray-900"
                     >
-                        About
+                        Dashboard
                     </Link>
                     <Link
                         href="/services"
