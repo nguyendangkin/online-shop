@@ -3,15 +3,6 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import LoadingSpinner from "@/components/layouts/loading/LoadingSpinner";
-import {
-    Pagination,
-    PaginationContent,
-    PaginationEllipsis,
-    PaginationItem,
-    PaginationLink,
-    PaginationNext,
-    PaginationPrevious,
-} from "@/components/ui/pagination";
 
 interface Product {
     id: number;
@@ -25,10 +16,11 @@ interface Product {
 export default function ProductsPage() {
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+    const [limit, setLimit] = useState<number>(5); // Mặc định là 5 sản phẩm
 
-    // Lấy dữ liệu từ API khi component mount
-    useEffect(() => {
-        fetch("https://fakestoreapi.com/products")
+    const fetchProducts = (limit: number) => {
+        setLoading(true);
+        fetch(`https://fakestoreapi.com/products?limit=${limit}`)
             .then((res) => res.json())
             .then((data) => {
                 setProducts(data);
@@ -38,7 +30,11 @@ export default function ProductsPage() {
                 console.error("Error fetching products:", error);
                 setLoading(false);
             });
-    }, []);
+    };
+
+    useEffect(() => {
+        fetchProducts(limit);
+    }, [limit]);
 
     if (loading) {
         return <LoadingSpinner />;
@@ -46,7 +42,29 @@ export default function ProductsPage() {
 
     return (
         <div className="container mx-auto py-8">
-            <h1 className="text-2xl font-bold mb-6">All Products</h1>
+            <h1 className="text-2xl font-bold mb-6">Products</h1>
+
+            {/* Dropdown chọn số lượng sản phẩm */}
+            <div className="mb-4">
+                <label
+                    htmlFor="limit"
+                    className="mr-2 font-semibold text-gray-700"
+                >
+                    Show:
+                </label>
+                <select
+                    id="limit"
+                    value={limit}
+                    onChange={(e) => setLimit(Number(e.target.value))}
+                    className="border rounded px-4 py-2"
+                >
+                    <option value={5}>5</option>
+                    <option value={10}>10</option>
+                    <option value={15}>15</option>
+                    <option value={20}>20</option>
+                </select>
+            </div>
+
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {products.map((product) => (
                     <div
@@ -82,22 +100,6 @@ export default function ProductsPage() {
                     </div>
                 ))}
             </div>
-            <Pagination>
-                <PaginationContent>
-                    <PaginationItem>
-                        <PaginationPrevious href="#" />
-                    </PaginationItem>
-                    <PaginationItem>
-                        <PaginationLink href="#">1</PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                        <PaginationEllipsis />
-                    </PaginationItem>
-                    <PaginationItem>
-                        <PaginationNext href="#" />
-                    </PaginationItem>
-                </PaginationContent>
-            </Pagination>
         </div>
     );
 }
