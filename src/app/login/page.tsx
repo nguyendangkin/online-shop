@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -14,7 +14,13 @@ export default function LoginPage() {
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
     const { toast } = useToast();
-    const { setToken } = useAuth();
+    const { setToken, token } = useAuth();
+
+    useEffect(() => {
+        if (!token) {
+            router.push("/");
+        }
+    }, [token, router]);
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();

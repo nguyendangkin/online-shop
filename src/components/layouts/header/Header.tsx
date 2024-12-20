@@ -52,18 +52,22 @@ export default function Header() {
                     >
                         Home
                     </Link>
-                    <Link
-                        href="/dashboard"
-                        className="text-gray-600 hover:text-gray-900"
-                    >
-                        Dashboard
-                    </Link>
-                    <Link
-                        href="/services"
-                        className="text-gray-600 hover:text-gray-900"
-                    >
-                        Services
-                    </Link>
+                    {token && (
+                        <Link
+                            href="/dashboard"
+                            className="text-gray-600 hover:text-gray-900"
+                        >
+                            Dashboard
+                        </Link>
+                    )}
+                    {token && (
+                        <Link
+                            href="/cart"
+                            className="text-gray-600 hover:text-gray-900"
+                        >
+                            Cart
+                        </Link>
+                    )}
                     <Link
                         href="/contact"
                         className="text-gray-600 hover:text-gray-900"
