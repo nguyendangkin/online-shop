@@ -1,5 +1,6 @@
 "use client";
 
+import UserCartPage from "@/app/carts/UserCartPage";
 import LoadingSpinner from "@/components/layouts/loading/LoadingSpinner";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -180,6 +181,7 @@ export default function CartPage() {
                     </div>
                 ))}
             </div>
+            <UserCartPage />
         </div>
     );
 }
