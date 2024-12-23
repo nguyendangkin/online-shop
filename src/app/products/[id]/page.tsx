@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 // Thay đổi import router
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import LoadingSpinner from "@/components/layouts/loading/LoadingSpinner";
 
 interface Product {
@@ -19,6 +19,7 @@ export default function ProductPage() {
     const [loading, setLoading] = useState<boolean>(true);
     // Sử dụng useParams thay vì router.query
     const params = useParams();
+    const router = useRouter();
     const id = params.id;
 
     useEffect(() => {
@@ -46,6 +47,23 @@ export default function ProductPage() {
 
     return (
         <div className="container mx-auto py-8">
+            <button
+                onClick={() => router.back()}
+                className="mb-6 flex items-center text-blue-600 hover:text-blue-800 transition-colors"
+            >
+                <svg
+                    className="w-5 h-5 mr-2"
+                    fill="none"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                >
+                    <path d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                Back to Carts
+            </button>
             <h1 className="text-2xl font-bold mb-6">{product.title}</h1>
             <div className="flex gap-8">
                 <img

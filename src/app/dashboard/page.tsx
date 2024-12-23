@@ -4,6 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useState, useEffect, ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
+import LoadingSpinner from "@/components/layouts/loading/LoadingSpinner";
 
 interface Product {
     id?: number;
@@ -63,6 +64,8 @@ export default function DashboardPage() {
     const [editProduct, setEditProduct] = useState<Product | null>(null);
 
     const fetchProducts = async () => {
+        setIsLoading(true);
+
         try {
             const response = await fetch("https://fakestoreapi.com/products");
             const data = await response.json();
@@ -73,6 +76,8 @@ export default function DashboardPage() {
                 description: "Failed to fetch products",
                 variant: "destructive",
             });
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -90,6 +95,10 @@ export default function DashboardPage() {
 
     if (!token) {
         return null;
+    }
+
+    if (isLoading) {
+        return <LoadingSpinner />;
     }
 
     const handleAddProduct = async () => {

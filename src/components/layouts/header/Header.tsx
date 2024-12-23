@@ -62,7 +62,7 @@ export default function Header() {
                     )}
                     {token && (
                         <Link
-                            href="/cart"
+                            href="/carts"
                             className="text-gray-600 hover:text-gray-900"
                         >
                             Cart
