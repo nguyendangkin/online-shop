@@ -1,4 +1,3 @@
-// CartPage.tsx
 "use client";
 
 import LoadingSpinner from "@/components/layouts/loading/LoadingSpinner";
@@ -18,10 +17,25 @@ export default function CartPage() {
     const [loading, setLoading] = useState<boolean>(true);
     const [limit, setLimit] = useState<number>(5);
     const [sortOrder, setSortOrder] = useState<string>("asc");
+    const [startDate, setStartDate] = useState<string>("");
+    const [endDate, setEndDate] = useState<string>("");
 
-    const fetchCarts = (limit: number, sortOrder: string) => {
+    const fetchCarts = (
+        limit: number,
+        sortOrder: string,
+        startDate: string,
+        endDate: string
+    ) => {
         setLoading(true);
-        const url = `https://fakestoreapi.com/carts?limit=${limit}&sort=${sortOrder}`;
+        let url = `https://fakestoreapi.com/carts?limit=${limit}&sort=${sortOrder}`;
+
+        if (startDate) {
+            url += `&startdate=${startDate}`;
+        }
+        if (endDate) {
+            url += `&enddate=${endDate}`;
+        }
+
         fetch(url)
             .then((res) => res.json())
             .then((data) => {
@@ -35,8 +49,8 @@ export default function CartPage() {
     };
 
     useEffect(() => {
-        fetchCarts(limit, sortOrder);
-    }, [limit, sortOrder]);
+        fetchCarts(limit, sortOrder, startDate, endDate);
+    }, [limit, sortOrder, startDate, endDate]);
 
     if (loading) return <LoadingSpinner />;
 
@@ -82,6 +96,38 @@ export default function CartPage() {
                         <option value="asc">Oldest First</option>
                         <option value="desc">Newest First</option>
                     </select>
+                </div>
+                <div className="flex items-center gap-4">
+                    <div className="flex items-center">
+                        <label
+                            htmlFor="startDate"
+                            className="text-gray-700 font-medium mr-3"
+                        >
+                            Start Date:
+                        </label>
+                        <input
+                            type="date"
+                            id="startDate"
+                            value={startDate}
+                            onChange={(e) => setStartDate(e.target.value)}
+                            className="border rounded-md px-3 py-2 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                    </div>
+                    <div className="flex items-center">
+                        <label
+                            htmlFor="endDate"
+                            className="text-gray-700 font-medium mr-3"
+                        >
+                            End Date:
+                        </label>
+                        <input
+                            type="date"
+                            id="endDate"
+                            value={endDate}
+                            onChange={(e) => setEndDate(e.target.value)}
+                            className="border rounded-md px-3 py-2 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                    </div>
                 </div>
             </div>
 
