@@ -3,6 +3,8 @@
 import CartManager from "@/app/carts/CarManager";
 import UserCartPage from "@/app/carts/UserCartPage";
 import LoadingSpinner from "@/components/layouts/loading/LoadingSpinner";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
@@ -15,6 +17,8 @@ interface Cart {
 
 export default function CartPage() {
     const router = useRouter();
+    const { token } = useAuth();
+
     const [carts, setCarts] = useState<Cart[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [limit, setLimit] = useState<number>(5);
@@ -53,6 +57,12 @@ export default function CartPage() {
     useEffect(() => {
         fetchCarts(limit, sortOrder, startDate, endDate);
     }, [limit, sortOrder, startDate, endDate]);
+
+    useEffect(() => {
+        if (!token) {
+            router.push("/");
+        }
+    }, [token, router]);
 
     if (loading) return <LoadingSpinner />;
 

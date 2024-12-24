@@ -81,7 +81,7 @@ export default function Header() {
                     {/* Chào mừng */}
                     {token && (
                         <div className="text-sm font-semibold mr-4">
-                            Welcome To Back
+                            Welcome To Back, Sir
                         </div>
                     )}
                     {!token ? (
