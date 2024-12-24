@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
+import { FileLock } from "lucide-react";
 
 export default function LoginPage() {
     const [username, setUsername] = useState("");
@@ -17,7 +18,7 @@ export default function LoginPage() {
     const { setToken, token } = useAuth();
 
     useEffect(() => {
-        if (!token) {
+        if (token) {
             router.push("/");
         }
     }, [token, router]);
@@ -41,7 +42,6 @@ export default function LoginPage() {
                 }
             );
 
-            // Kiểm tra response có ok không trước khi parse JSON
             if (!response.ok) {
                 throw new Error("Invalid credentials");
             }
@@ -64,7 +64,6 @@ export default function LoginPage() {
                 router.push("/");
             }
         } catch (error) {
-            // Xử lý tất cả các loại lỗi ở đây
             if (error instanceof Error) {
                 toast({
                     title: "Error",
@@ -77,6 +76,12 @@ export default function LoginPage() {
         } finally {
             setIsLoading(false);
         }
+    };
+
+    // Hàm điền tự động vào các ô nhập
+    const handleAutoFill = () => {
+        setUsername("mor_2314");
+        setPassword("83r5^_");
     };
 
     return (
@@ -115,6 +120,15 @@ export default function LoginPage() {
                             className="mt-2 w-full"
                         />
                     </div>
+
+                    {/* Auto-fill Button */}
+                    <Button
+                        type="button"
+                        className="p-2 bg-blue-500 text-white shadow-sm hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                        onClick={handleAutoFill}
+                    >
+                        <FileLock className="text-lg" />
+                    </Button>
 
                     {/* Submit Button */}
                     <Button

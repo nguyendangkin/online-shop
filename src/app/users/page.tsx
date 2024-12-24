@@ -22,6 +22,8 @@ import {
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import Link from "next/link";
 import { DialogDescription } from "@radix-ui/react-dialog";
+import { useAuth } from "@/contexts/AuthContext";
+import { useRouter } from "next/navigation";
 
 interface Geolocation {
     lat: string;
@@ -67,6 +69,7 @@ const initialUserForm = {
 };
 
 const UserList = () => {
+    const router = useRouter();
     const [users, setUsers] = useState<User[]>([]);
     const [nextId, setNextId] = useState<number>(1);
     const [limit, setLimit] = useState<number>(5);
@@ -81,6 +84,7 @@ const UserList = () => {
         type: "success" | "error";
         message: string;
     } | null>(null);
+    const { token } = useAuth();
 
     useEffect(() => {
         fetchUsers();
@@ -93,6 +97,12 @@ const UserList = () => {
             setNextId(maxId + 1);
         }
     }, [users]);
+
+    useEffect(() => {
+        if (!token) {
+            router.push("/");
+        }
+    }, [token, router]);
 
     const fetchUsers = async () => {
         try {
