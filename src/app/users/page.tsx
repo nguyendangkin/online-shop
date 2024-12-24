@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { ArrowUpDown, Users, Phone, MapPin } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Link from "next/link";
 
 interface Geolocation {
     lat: string;
@@ -103,57 +104,66 @@ const UserList = () => {
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                             {users.map((user) => (
-                                <Card key={user.id} className="overflow-hidden">
-                                    <CardContent className="p-4">
-                                        <div className="space-y-4">
-                                            <div className="flex items-start justify-between">
-                                                <div>
-                                                    <h3 className="font-semibold text-lg">
-                                                        {user.name.firstname}{" "}
-                                                        {user.name.lastname}
-                                                    </h3>
-                                                    <p className="text-sm text-gray-500">
-                                                        @{user.username}
-                                                    </p>
-                                                </div>
-                                                <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">
-                                                    ID: {user.id}
-                                                </span>
-                                            </div>
-
-                                            <div className="space-y-2">
-                                                <p className="text-sm flex items-center gap-2">
-                                                    <Phone className="h-4 w-4 text-gray-400" />
-                                                    {user.phone}
-                                                </p>
-                                                <div className="flex items-start gap-2">
-                                                    <MapPin className="h-4 w-4 text-gray-400 mt-1" />
-                                                    <div className="text-sm">
-                                                        <p>
+                                <Link href={`/users/${user.id}`} key={user.id}>
+                                    <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
+                                        <CardContent className="p-4">
+                                            <div className="space-y-4">
+                                                <div className="flex items-start justify-between">
+                                                    <div>
+                                                        <h3 className="font-semibold text-lg">
                                                             {
-                                                                user.address
-                                                                    .street
-                                                            }
-                                                        </p>
-                                                        <p>
-                                                            {user.address.city},{" "}
-                                                            {
-                                                                user.address
-                                                                    .zipcode
-                                                            }
+                                                                user.name
+                                                                    .firstname
+                                                            }{" "}
+                                                            {user.name.lastname}
+                                                        </h3>
+                                                        <p className="text-sm text-gray-500">
+                                                            @{user.username}
                                                         </p>
                                                     </div>
+                                                    <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">
+                                                        ID: {user.id}
+                                                    </span>
+                                                </div>
+
+                                                <div className="space-y-2">
+                                                    <p className="text-sm flex items-center gap-2">
+                                                        <Phone className="h-4 w-4 text-gray-400" />
+                                                        {user.phone}
+                                                    </p>
+                                                    <div className="flex items-start gap-2">
+                                                        <MapPin className="h-4 w-4 text-gray-400 mt-1" />
+                                                        <div className="text-sm">
+                                                            <p>
+                                                                {
+                                                                    user.address
+                                                                        .street
+                                                                }
+                                                            </p>
+                                                            <p>
+                                                                {
+                                                                    user.address
+                                                                        .city
+                                                                }
+                                                                ,{" "}
+                                                                {
+                                                                    user.address
+                                                                        .zipcode
+                                                                }
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div className="pt-2 border-t">
+                                                    <p className="text-sm text-gray-500 truncate">
+                                                        {user.email}
+                                                    </p>
                                                 </div>
                                             </div>
-
-                                            <div className="pt-2 border-t">
-                                                <p className="text-sm text-gray-500 truncate">
-                                                    {user.email}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </CardContent>
-                                </Card>
+                                        </CardContent>
+                                    </Card>
+                                </Link>
                             ))}
                         </div>
                     )}
