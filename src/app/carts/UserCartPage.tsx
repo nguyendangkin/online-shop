@@ -98,7 +98,7 @@ export default function UserCartPage() {
     };
 
     return (
-        <div className="container pt-6 max-w-2xl">
+        <div className="container max-w-2xl">
             <Card className="mb-6">
                 <CardHeader>
                     <CardTitle>User Cart Viewer</CardTitle>
@@ -117,7 +117,8 @@ export default function UserCartPage() {
                                         value={user.id.toString()}
                                     >
                                         {user.name.firstname}{" "}
-                                        {user.name.lastname}
+                                        {user.name.lastname} (User ID: {user.id}
+                                        )
                                     </SelectItem>
                                 ))}
                             </SelectGroup>

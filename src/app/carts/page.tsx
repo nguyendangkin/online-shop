@@ -1,5 +1,6 @@
 "use client";
 
+import CartManager from "@/app/carts/CarManager";
 import UserCartPage from "@/app/carts/UserCartPage";
 import LoadingSpinner from "@/components/layouts/loading/LoadingSpinner";
 import { useRouter } from "next/navigation";
@@ -181,7 +182,10 @@ export default function CartPage() {
                     </div>
                 ))}
             </div>
-            <UserCartPage />
+            <div className="border rounded-2xl p-4 mt-2">
+                <UserCartPage />
+                <CartManager />
+            </div>
         </div>
     );
 }
