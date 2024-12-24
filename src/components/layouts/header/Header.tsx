@@ -68,12 +68,14 @@ export default function Header() {
                             Cart
                         </Link>
                     )}
-                    <Link
-                        href="/contact"
-                        className="text-gray-600 hover:text-gray-900"
-                    >
-                        Contact
-                    </Link>
+                    {token && (
+                        <Link
+                            href="/users"
+                            className="text-gray-600 hover:text-gray-900"
+                        >
+                            Users
+                        </Link>
+                    )}
                 </nav>
 
                 {/* Action Buttons */}
