@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-// Thay đổi import router
 import { useParams, useRouter } from "next/navigation";
 import LoadingSpinner from "@/components/layouts/loading/LoadingSpinner";
 
@@ -17,7 +16,6 @@ interface Product {
 export default function ProductPage() {
     const [product, setProduct] = useState<Product | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
-    // Sử dụng useParams thay vì router.query
     const params = useParams();
     const router = useRouter();
     const id = params.id;

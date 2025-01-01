@@ -78,7 +78,6 @@ export default function LoginPage() {
         }
     };
 
-    // Hàm điền tự động vào các ô nhập
     const handleAutoFill = () => {
         setUsername("mor_2314");
         setPassword("83r5^_");

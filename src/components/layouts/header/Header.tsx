@@ -14,7 +14,6 @@ export default function Header() {
 
     const handleLogout = async () => {
         try {
-            // Gửi yêu cầu xóa cookie qua API
             const response = await fetch("/api", {
                 method: "DELETE",
                 headers: {
@@ -23,10 +22,8 @@ export default function Header() {
             });
 
             if (response.ok) {
-                // Xóa token khỏi context và localStorage
                 setToken(null);
 
-                // Chuyển hướng về trang chủ
                 router.push("/");
             } else {
                 console.error("Failed to logout. Please try again.");

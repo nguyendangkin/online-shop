@@ -56,7 +56,7 @@ interface User {
 const initialUserForm = {
     email: "",
     username: "",
-    password: "default123", // Thêm password mặc định
+    password: "default123",
     name: { firstname: "", lastname: "" },
     address: {
         city: "",
@@ -91,7 +91,6 @@ const UserList = () => {
     }, [limit, sortOrder]);
 
     useEffect(() => {
-        // Update nextId based on existing users
         if (users.length > 0) {
             const maxId = Math.max(...users.map((user) => user.id));
             setNextId(maxId + 1);
@@ -111,7 +110,7 @@ const UserList = () => {
                 `https://fakestoreapi.com/users?limit=${limit}&sort=${sortOrder}`
             );
             const data = await response.json();
-            // Ensure all users have unique IDs
+
             const uniqueUsers = data.map((user: User, index: number) => ({
                 ...user,
                 id: user.id || index + 1,
@@ -154,10 +153,9 @@ const UserList = () => {
                     )
                 );
             } else {
-                // Sử dụng dữ liệu từ form thay vì response data
                 const newUser = {
-                    ...userForm, // Sử dụng dữ liệu từ form
-                    id: nextId, // Gán ID mới
+                    ...userForm,
+                    id: nextId,
                 };
                 setUsers((prevUsers) => [...prevUsers, newUser]);
                 setNextId((prevId) => prevId + 1);

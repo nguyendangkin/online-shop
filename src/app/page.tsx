@@ -16,12 +16,11 @@ interface Product {
 export default function ProductsPage() {
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const [limit, setLimit] = useState<number>(5); // Mặc định là 5 sản phẩm
-    const [sortOrder, setSortOrder] = useState<string>("asc"); // Mặc định là sắp xếp tăng dần (asc)
-    const [categories, setCategories] = useState<string[]>([]); // Danh sách các danh mục
-    const [selectedCategory, setSelectedCategory] = useState<string>(""); // Danh mục đã chọn
+    const [limit, setLimit] = useState<number>(5);
+    const [sortOrder, setSortOrder] = useState<string>("asc");
+    const [categories, setCategories] = useState<string[]>([]);
+    const [selectedCategory, setSelectedCategory] = useState<string>("");
 
-    // Hàm lấy danh sách sản phẩm
     const fetchProducts = (
         limit: number,
         sortOrder: string,
@@ -45,7 +44,6 @@ export default function ProductsPage() {
             });
     };
 
-    // Hàm lấy danh sách các danh mục
     const fetchCategories = () => {
         fetch("https://fakestoreapi.com/products/categories")
             .then((res) => res.json())
@@ -57,11 +55,10 @@ export default function ProductsPage() {
             });
     };
 
-    // Effect để lấy danh mục và sản phẩm
     useEffect(() => {
         fetchCategories();
         fetchProducts(limit, sortOrder, selectedCategory);
-    }, [limit, sortOrder, selectedCategory]); // Khi limit, sortOrder hoặc selectedCategory thay đổi
+    }, [limit, sortOrder, selectedCategory]);
 
     if (loading) {
         return <LoadingSpinner />;
